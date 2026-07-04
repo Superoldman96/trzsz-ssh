@@ -629,10 +629,14 @@ func getUdpTimeoutConfig(args *sshArgs, timeoutOption string, defaultTimeout tim
 }
 
 func getUdpMode(args *sshArgs) udpModeType {
+	if args.TCP {
+		return kUdpModeNo
+	}
+
 	if udpMode := args.Option.get("UdpMode"); udpMode != "" {
 		switch strings.ToLower(udpMode) {
 		case "no":
-			if args.UDP || args.KCP {
+			if args.UDP || args.KCP || args.QUIC || args.Attach {
 				warning("disable UDP mode since -oUdpMode=No")
 			}
 			return kUdpModeNo
@@ -649,6 +653,9 @@ func getUdpMode(args *sshArgs) udpModeType {
 
 	if args.KCP {
 		return kUdpModeKcp
+	}
+	if args.QUIC {
+		return kUdpModeQuic
 	}
 
 	udpMode := getExConfig(args, "UdpMode")
