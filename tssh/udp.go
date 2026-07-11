@@ -114,14 +114,6 @@ func (c *sshUdpClient) Wait() error {
 	return c.SshUdpClient.Wait()
 }
 
-func (c *sshUdpClient) exit(code int, cause string) {
-	if notif := c.notifModel.Load(); notif != nil {
-		notif.clientExiting.Store(true)
-		notif.renderView(true, false)
-	}
-	c.sshConn.Load().forceExit(code, cause)
-}
-
 func (c *sshUdpClient) debug(format string, a ...any) {
 	if !enableDebugLogging {
 		return
@@ -138,7 +130,8 @@ func (c *sshUdpClient) udpKeepAlive() {
 	for !c.IsClosed() {
 		if c.sshConn.Load() != nil && time.Since(time.UnixMilli(c.GetLastActiveTime())) > c.aliveTimeout {
 			c.debug("alive timeout for %v", c.aliveTimeout)
-			c.exit(kExitCodeUdpTimeout, fmt.Sprintf("lost connection and timeout after %s", formatSshTime(uint32(c.aliveTimeout/time.Second))))
+			c.sshConn.Load().forceExit(kExitCodeUdpTimeout,
+				fmt.Sprintf("lost connection and timeout after %s", formatSshTime(uint32(c.aliveTimeout/time.Second))))
 			return
 		}
 
