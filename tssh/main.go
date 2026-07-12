@@ -351,8 +351,10 @@ func TsshMain(argv []string) int {
 	}
 
 	// custom DNS server
-	if args.Dns != "" {
-		setDNS(args.Dns)
+	if args.DNS != "" {
+		setDNS(args.DNS)
+	} else if userConfig.customDnsServer != "" {
+		setDNS(userConfig.customDnsServer)
 	}
 
 	// start ssh program
