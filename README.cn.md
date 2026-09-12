@@ -161,7 +161,7 @@ trzsz-ssh ( tssh ) 与 [tsshd](https://github.com/trzsz/tsshd) 一起，适用�
 
   </details>
 
-- 用 Go 直接安装（ 要求 go 1.25 以上 ）
+- 用 Go 直接安装（ 要求 go 1.26 以上 ）
 
   <details><summary><code>go install github.com/trzsz/trzsz-ssh/cmd/tssh@latest</code></summary>
 
@@ -177,7 +177,7 @@ trzsz-ssh ( tssh ) 与 [tsshd](https://github.com/trzsz/tsshd) 一起，适用�
 
   </details>
 
-- 用 Go 自己编译（ 要求 go 1.25 以上 ）
+- 用 Go 自己编译（ 要求 go 1.26 以上 ）
 
   <details><summary><code>sudo make install</code></summary>
 
